@@ -1,1166 +1,873 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXX');
-    </script>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Font and Style Imports -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,bold,900,600">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
-    
-    <!-- Custom Styles -->
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f8f9fa;
-            color: #333333;
-        }
-        .global_container {
-            padding: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-        .section {
-            margin-bottom: 40px;
-        }
-        .myButton {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .myButton:hover {
-            background-color: #0056b3;
-        }
-        h1, h3 {
-            color: #2C3E50;
-            font-family: 'Montserrat', sans-serif;
-            text-align: center;
-        }
-        h1 {
-            font-weight: 600;
-        }
-        h3 {
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-        p {
-            font-family: 'Open Sans', sans-serif;
-            line-height: 1.6;
-            font-size: 16px;
-        }
-        .abstract-text {
-            text-align: justify;
-        }
-        .container {
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-        }
-        .container .column {
-            flex: 1;
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #e0e0e0;
-            padding: 12px;
-            text-align: center;
-        }
-        th {
-            background-color: #007BFF;
-            color: white;
-            font-weight: 600;
-        }
-        .author {
-            text-align: center;
-            font-size: 14px;
-            color: #666666;
-            margin-top: 10px;
-        }
-        .abstract-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            text-align: center;
-            color: #2C3E50;
-        }
-        hr {
-            border: 0;
-            height: 1px;
-            background: #e0e0e0;
-            margin: 40px 0;
-        }
-        /* Optional: Adjust embed spacing */
-        .embed-section {
-            margin-bottom: 20px;
-        }
-    </style>
-    
-    <title>AutoEmbed: Towards Automated Software Development for Generic Embedded IoT Systems via LLMs</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoEmbed: Automated Software Development for Embedded IoT Systems</title>
+  <meta name="description" content="AutoEmbed: The first fully automated software development platform for general-purpose embedded IoT systems via LLMs. ACM SenSys 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-light: #dbeafe;
+      --dark: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.90);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: -.3px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 50%, #f0fdf4 100%);
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+    .venue-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 99px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -.03em;
+      max-width: 820px;
+      margin: 0 auto 20px;
+      color: var(--dark);
+    }
+    .hero h1 span { color: var(--blue); }
+
+    .authors {
+      font-size: .95rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      line-height: 1.8;
+    }
+    .authors strong { color: var(--dark); font-weight: 600; }
+
+    .affiliations {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all .2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(37,99,235,.30);
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,.35); }
+    .btn-outline {
+      background: #fff;
+      color: var(--dark);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .btn-outline:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+    /* ── SECTION WRAPPER ── */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .section-sm { padding: 48px 24px; }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+    .section-title .accent { color: var(--blue); }
+    .section-lead {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 40px;
+      max-width: 680px;
+    }
+    .divider {
+      width: 48px;
+      height: 4px;
+      background: var(--blue);
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    /* ── KEY RESULTS ── */
+    .results-bg {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+    }
+    .stat-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      transition: all .25s;
+    }
+    .stat-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 4px 20px rgba(37,99,235,.12);
+      transform: translateY(-2px);
+    }
+    .stat-value {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: -.04em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* ── ABSTRACT ── */
+    .abstract-box {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      box-shadow: var(--shadow);
+    }
+    .abstract-box p {
+      font-size: 1rem;
+      color: #374151;
+      line-height: 1.85;
+      text-align: justify;
+    }
+
+    /* ── PIPELINE STEPS ── */
+    .pipeline-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .pipeline-step {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      position: relative;
+      transition: all .25s;
+    }
+    .pipeline-step:hover {
+      border-color: var(--blue);
+      box-shadow: 0 4px 20px rgba(37,99,235,.10);
+    }
+    .step-number {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .step-title {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .step-icon {
+      font-size: 1.5rem;
+      color: var(--blue);
+      margin-bottom: 12px;
+      opacity: .85;
+    }
+
+    /* ── IMAGES ── */
+    .img-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      text-align: center;
+      padding: 8px;
+    }
+    .img-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+    .img-caption {
+      font-size: .82rem;
+      color: var(--muted);
+      padding: 10px 12px 6px;
+      text-align: center;
+    }
+
+    /* ── DOWNLOAD ── */
+    .download-bg {
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .download-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .download-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .download-desc {
+      font-size: .97rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.8;
+    }
+    .dl-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-dl {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 20px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 600;
+      font-size: .9rem;
+      transition: all .2s;
+      box-shadow: var(--shadow);
+    }
+    .btn-dl:hover { border-color: var(--blue); color: var(--blue); transform: translateX(4px); }
+    .btn-dl .fa-brands, .btn-dl .fas, .btn-dl .fab { font-size: 1.1rem; color: var(--blue); }
+    .btn-dl .dl-meta { font-size: .75rem; font-weight: 400; color: var(--muted); margin-top: 1px; }
+
+    .prereqs {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      box-shadow: var(--shadow);
+    }
+    .prereqs h4 {
+      font-size: .85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .prereqs ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .prereqs li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .9rem;
+      color: var(--dark);
+    }
+    .prereqs li i { color: var(--blue); margin-top: 3px; flex-shrink: 0; }
+
+    /* ── WORKFLOW STEPS ── */
+    .workflow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 32px;
+    }
+    .wf-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .wf-step:last-child { border-bottom: none; }
+    .wf-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 700;
+      font-size: .85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .wf-content h4 {
+      font-size: .97rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .wf-content p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── VIDEOS ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .video-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all .25s;
+    }
+    .video-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+    .video-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+    .video-caption {
+      padding: 14px 16px;
+      font-size: .87rem;
+      font-weight: 600;
+      color: var(--dark);
+      text-align: center;
+    }
+
+    /* ── BIBTEX ── */
+    .bibtex-bg {
+      background: var(--dark);
+      color: #e2e8f0;
+    }
+    .bibtex-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 24px;
+    }
+    .bibtex-inner .section-title { color: #f1f5f9; }
+    .bibtex-inner .divider { background: #475569; }
+    .bibtex-code {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .82rem;
+      line-height: 1.8;
+      color: #94a3b8;
+      overflow-x: auto;
+      position: relative;
+    }
+    .bibtex-code .k { color: #60a5fa; }
+    .bibtex-code .v { color: #a3e635; }
+    .bibtex-code .s { color: #fbbf24; }
+    .copy-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: .75rem;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all .2s;
+    }
+    .copy-btn:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0f172a;
+      border-top: 1px solid #1e293b;
+      padding: 32px 24px;
+      text-align: center;
+      color: #64748b;
+      font-size: .85rem;
+    }
+    footer a { color: #94a3b8; text-decoration: none; transition: color .2s; }
+    footer a:hover { color: var(--blue); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .download-grid { grid-template-columns: 1fr; }
+      .abstract-box { padding: 24px 20px; }
+      .bibtex-code { padding: 20px 16px; font-size: .76rem; }
+      .hero h1 { font-size: 1.7rem; }
+      .pipeline-steps { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <div class="global_container">
-        <div class="section">
-            <h1>AutoEmbed: Towards Automated Software Development for Generic Embedded IoT Systems via LLMs</h1>
-            <p class="author">Anonymous Author</p>
-            <div class="buttons" style="text-align: center;">
-                <a href="#Workflow" class="btn">Workflow</a>
-                <a href="#Demo" class="btn">Demo</a>
-                <a href="#Prompt" class="btn">Prompt</a>
-                <a href="#Example" class="btn">Example Output</a>
-                <a href="#Hardware" class="btn">Supported Hardware</a>
-                <a href="https://github.com/AutoEmbed/Code/" class="btn">Code</a>
 
-            </div>
-            <style>
-                .btn {
-                    padding: 8px 16px;
-                    margin: 10px 15px;
-                    background-color: #007BFF;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    transition: background-color 0.3s ease, transform 0.3s ease;
-                }
-        
-                .btn:hover {
-                    background-color: #0056b3;
-                    transform: scale(1);
-                }
-        
-                .btn:active {
-                    background-color: #004085;
-                }
-        
-                .buttons {
-                    display: flex;
-                    justify-content: center;
-                    flex-wrap: wrap;
-                }
-        
-                .buttons .btn {
-                    margin: 8px;
-                }
-            </style>
-            <div style="text-align: center; margin-top: 40px;">
-                <iframe src="https://www.youtube.com/embed/B7QqENnR1dg" allowfullscreen 
-        style="width: 90%; max-width: 800px; height: calc(100vw * 0.5625); max-height: 450px; border: none;">
-    </iframe>
-            </div>
-            <h3>Abstract</h3>
-            <p class="abstract-text">
-                Embedded IoT system development is crucial for enabling seamless connectivity and functionality across a wide range of applications. However, such a complex process requires cross-domain knowledge of hardware and software and hence often necessitates direct developer involvement, making it labor-intensive, time-consuming, and error-prone. To address this challenge, this paper introduces AutoEmbed, the first fully automated software development platform for general-purpose embedded IoT systems. The key idea is to leverage the reasoning ability of Large Language Models (LLMs) and embedded system expertise to automate the hardware-in-the-loop development process. The main methods include a component-aware library resolution method for addressing hardware dependencies, a library knowledge generation method that injects utility domain knowledge into LLMs, and an auto-programming method that ensures successful deployment. We evaluate AutoEmbed's performance across 71 modules and four mainstream embedded development platforms with over 350 IoT tasks. Experimental results show that AutoEmbed can generate codes with an accuracy of 95.7% and complete tasks with a success rate of 86.5%, surpassing human-in-the-loop baselines by 15.6%--37.7% and 25.5%--53.4%, respectively. We also show AutoEmbed’s potential through case studies in environmental monitoring and remote control systems development.
-            </p>
-            <img src="Overview.png" class="img-responsive center-block overview-image" alt="Overview">
-            
-            
-        </div>
-        
-        <hr>
-        
-        <div class="section"> <h3 id="Workflow">Workflow / How to Use AutoEmbed</h3> <p>AutoEmbed automates the entire embedded development process, from setup to final code flashing. Follow these simple steps:</p> <p><img src="WORK_FLOW.png" alt="Workflow Diagram" style="width:100%; max-width:1200px; display:block; margin:auto;"></p> <p><strong>Step 1: Prepare Your Hardware</strong><br>Ensure that your embedded device (e.g., Arduino board) is ready and properly set up.</p> <p><strong>Step 2: Connect Your Device to Your Laptop</strong><br>Use the appropriate cable to link your embedded device to your laptop.</p> <p><strong>Step 3: Open the AutoEmbed App</strong><br>Launch the AutoEmbed application on your laptop. Enter the task description and relevant metadata, specifying the functionality and requirements of your project. Once you're ready, press the "Start" button to begin the automation process.</p> <p><strong>Step 4: Automate the Development Process</strong><br>AutoEmbed will automatically generate the code, resolve library dependencies, perform logic checks, and handle hardware interfacing. Once everything is ready, it will compile the code and flash it directly to your embedded device, ensuring everything works as expected.</p> <p><strong>Step 5: Enjoy Your Fully Developed System</strong><br>With the code successfully flashed, your system is now ready to use—enjoy your fully developed embedded solution!</p> </div>        
-        
-        <hr>
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">AutoEmbed</a>
+    <ul class="nav-links">
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#download">Download</a></li>
+      <li><a href="#workflow">Workflow</a></li>
+      <li><a href="#demos">Demos</a></li>
+      <li><a href="#bibtex">BibTeX</a></li>
+    </ul>
+  </div>
+</nav>
 
-        <div class="section">
-            <h3 id="Demo">Demo</h3>
-            <div class="row">
-                <div class="col-md-4 embed-section">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/upFCZ8X9dnI" allowfullscreen></iframe>
-                    </div>
-                    <p class="text-center">Automating the Development of an Environmental Monitoring System</p>
-                </div>
-                <div class="col-md-4 embed-section">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/_ySeOYEzsjk" allowfullscreen></iframe>
-                    </div>
-                    <p class="text-center">Automating the Development of a Remote Fan Control System</p>
-                </div>
-                <div class="col-md-4 embed-section">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/JY7V_TtOXnU" allowfullscreen></iframe>
-                    </div>
-                    <p class="text-center">Automating the Development of an Obstacle-Avoiding Car System</p>
-                </div>
-            </div>
-        </div>
-        
-        
-        <hr>
-        
-        <div class="section">
-            <h3 id="Prompt">Appendix A - Prompt Template</h3>
-        
-            <!-- Knowledge Generation -->
-            <div class="prompt-category">
-                <h4>1. Knowledge Generation</h4>
-        
-                <!-- Header File Knowledge Extraction -->
-                <div class="prompt-template">
-                    <h5>Header File Knowledge Extraction</h5>
-                    <p><strong>Description:</strong> Extract API information from the header code of a library.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-            Given the header code of the library, extract API information, including:
-            - API Name
-            - Description (less than 20 words)
-            - Parameters
-            - Return Type.
-        
-            Ignore constructors, destructors, and operator overloads. Also, skip internal helper functions that are not part of the public API.
-            
-            Output the API information in JSON format with the following structure, without any additional words.
-            
-            Example:
-            [
-            {{
-                "name": "exampleFunction",
-                "description": "concise description",
-                "parameters": ['int param1', 'float param2'],
-                "return_type": "void"
-            }},
-            {{
-                "name": "anotherFunction",
-                "description": "concise description",
-                "parameters": ['std::string input'],
-                "return_type": "int"
-            }}
-            ]
-            
-            Please generate API information for the following Header Code:
-            {header_content}
-        """
-                    </code></pre>
-                </div>
-        
-                <!-- Example File Knowledge Extraction -->
-                <div class="prompt-template">
-                    <h5>Example File Knowledge Extraction</h5>
-                    <p><strong>Description:</strong> Summarize common issues and best practices from API JSON and sample code.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-        Please read the APIs and sample code in the following API JSON file, and summarize common issues to avoid and corresponding best practices when using the API. These best practices should cover the following aspects:
-        1.API Call Order (should indicate which header is #include, and how to initialize the module), 2.Parameter Usage (should contain an example use instance), and Return Value Handling.
-        Example:
-        {{
-            "xxx.h":[
-                {{
-                    "name": "",
-                    "description": "",
-                    "parameters": [],
-                    "practices": {{
-                        "API order": "", #(should indicate which header is #include, and how to initialize the module)
-                        "parameter usage": "", (should contain an usage example)
-                        "return value handling": ""
-                    }}
-                }}
-            ]
-        }}
-        Incorporate these learned best practices into the original API JSON structure without any additional words. Do not change the original JSON structure. Limited to 20 words each practice.
-        API JSON:
-        {json.dumps(sub_chunk, indent=4)}
-        Sketch Code:
-        {ino_content}
-        """
-                    </code></pre>
-                </div>
-        
-                <!-- Functionality Knowledge Generation -->
-                <div class="prompt-template">
-                    <h5>Functionality Knowledge Generation</h5>
-                    <p><strong>Description:</strong> Extract function calls related to a specific component and library from code.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-            Please extract all function calls related to the component {ComponentName} with library {LibraryName} from the provided code snippet. List these function calls in the order they appear in the code.
-            Follow these steps:
-            1. Summarize the functionality of the example.
-            2. Identify and list the function calls related to the component, removing any object prefixes.
-            3. Do not include parentheses or parameters in the function calls. For example, if it contains setPrecision(PARA), it should be listed as setPrecision.
-            
-            Example:
-            {{
-                "ReadHumidity.ino": [
-                    {{
-                        "functionality": "reads humidity data and prints the value to the serial port",
-                        "API": [
-                            "function_call_1",
-                            "function_call_2",
-                            "function_call_3"
-                        ]
-                    }}
-                ]
-            }}
-            
-            Summarize it in JSON structure without any additional words.
-            
-            Sketch Code of file {file_name}:
-            {ino_content}
-        """
-                    </code></pre>
-                </div>
-            </div>
-        
-            <!-- Knowledge Extraction -->
-            <div class="prompt-category">
-                <h4>2. Knowledge Extraction</h4>
-        
-                <!-- Functionality Separation -->
-                <div class="prompt-template">
-                    <h5>Functionality Separation</h5>
-                    <p><strong>Description:</strong> Generate detailed subtasks required to complete a main task based on components.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-        Given the task description and the list of components, generate detailed subtasks (functionalities) required to complete the task. Follow these steps:
-        1. Summarize the main task.
-        2. List the subtasks in the order they should be completed.
-        Example:
-        Task: Measure temperature and log to the console.
-        Components: ["Temperature Sensor"]
-        Output:
-        {{
-            "Task": "Measure temperature and log to the console",
-            "Subtasks": [
-                "Initialize the temperature sensor",
-                "Read temperature data from the sensor",
-                "Log the temperature data to the console"
-            ]
-        }}
-        Task: {task}
-        Components: {components}
-        Please generate subtasks in the JSON format without any additional words.
-        """
-                    </code></pre>
-                </div>
-            </div>
-        
-            <!-- Code Generation -->
-            <div class="prompt-category">
-                <h4>3. Code Generation</h4>
-        
-                <!-- Initial Code Generation -->
-                <div class="prompt-template">
-                    <h5>Initial Code Generation</h5>
-                    <p><strong>Description:</strong> Generate complete embedded C/C++ code based on provided components and tasks.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-            You are an expert in embedded systems programming. Your task is to generate the complete embedded C/C++ code for a development platform. The provided information includes the component, the development board name, the pin connections, and the specific task to be performed.
-            
-            Component: {component_name}
-            Library: {Library_name}
-            Development Board: {board_name}
-            Pin Connections: {pin_connections}
-            Task: {task_description}
-            
-            The following Header file and APIs are available and relevant for this task:
-            {json.dumps(matched_apis, indent=4)}
-            
-            Rules for the coding:
-            1. Write as many DEBUG INFO print commands as you can to help debug.
-            2. DEBUG INFO will be used to detect the execution state of tasks. It should show the beginning, ending, timing, and order of each task.
-            3. Do not output any text other than the complete embedded C/C++ code.
-            4. Use only the provided API functions from the given library for the component. Do not invent any header or APIs that are not listed.
-            5. Please be reminded that some sensors do not have begin() function, please check it in the provided API list.
-            
-            Example output:
-            ```cpp
-            #include <'Library_name'.h>
-            
-            'initialization_code'
-            
-            void setup() {{
-                Serial.begin(9600);
-                'setup_code'
-                Serial.println("DEBUG: Setup complete");
-            }}
-            
-            void loop() {{
-                Serial.println("DEBUG: Loop start");
-                'loop_code'
-                Serial.println("DEBUG: Loop end");
-            }}
-            Generate the complete sketch code based on the provided information and rules.
-        """
-                    </code></pre>
-                </div>
-        
-                <!-- Regenerate Code -->
-                <div class="prompt-template">
-                    <h5>Regenerate Code</h5>
-                    <p><strong>Description:</strong> Regenerate embedded C/C++ code based on feedback from a previous attempt.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-            You are an expert in embedded systems programming. The previous attempt to generate the code failed based on the following feedback:
-            
-            Feedback:
-            {feedback}
-            
-            Below is the previous version of the code:
-            ```cpp
-            {previous_code}
-            ```
-            
-            Your task is to regenerate the complete embedded C/C++ code for a development platform, considering the provided feedback. The provided information includes the component, the development board name, the pin connections, and the specific task to be performed.
-            
-            Component: {component_name}
-            Library: {library_name}
-            Development Board: {board_name}
-            Pin Connections: {pin_connections}
-            Task: {task_description}
-            
-            The following Header file and APIs are available and relevant for this task:
-            {json.dumps(matched_apis, indent=4)}
-            
-            Rules for the coding:
-            1. Incorporate the feedback to address the issues in the previous code.
-            2. Write as many DEBUG INFO print commands as you can to help debug.
-            3. DEBUG INFO will be used to detect the execution state of tasks. It should show the beginning, ending, timing, and order of each task.
-            4. Do not output any text other than the complete embedded C/C++ code.
-            5. Use only the provided API functions from the given library for the component. Do not invent any header or APIs that are not listed.
-            6. Please be reminded that some sensors do not have begin() function, please check it in the provided API list.
-            
-            Example output:
-            ```cpp
-            #include <'library_name'.h>
-            
-            'code_initialization'
-        
-            void setup() {{
-                Serial.begin(9600);
-                'setup_code'
-                Serial.println("DEBUG: Setup complete");
-            }}
-            
-            void loop() {{
-                Serial.println("DEBUG: Loop start");
-                'loop_code'
-                Serial.println("DEBUG: Loop end");
-            }}
-            Generate the complete sketch code based on the provided information and rules.
-        """
-                    </code></pre>
-                </div>
-        
-                <!-- Resolve Compiling Errors -->
-                <div class="prompt-template">
-                    <h5>Resolve Compiling Errors</h5>
-                    <p><strong>Description:</strong> Fix compilation errors in embedded C/C++ code based on error logs.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-            You are an expert in embedded systems programming. The following sketch code is failing to compile. The provided information includes the component, the development board name, the pin connections, and the specific task to be performed.
-            
-            Component: {component_name}
-            Development Board: {board_name}
-            Pin Connections: {pin_connections}
-            Task: {task_description}
-            
-            The following library and APIs are available and relevant for this task:
-            {json.dumps(matched_apis, indent=4)}
-            
-            Compilation Error:
-            {error_log}
-            
-            Rules for the correction:
-                1. Write as many DEBUG INFO print commands as you can to help debug.
-                2. DEBUG INFO will be used to detect the execution state of tasks. It should show the beginning, ending, timing, and order of each task.
-                3. Do not output any text other than the complete embedded C/C++ code.
-                4. Check if use only the provided API functions from the given library for the component.
-                
-            Please provide a corrected version of the sketch code that fixes the above compilation error.
-            
-            Example output:
-            ```cpp
-            #include <'Library_name'.h>
-            
-            'initialization_code'
-            
-            void setup() {{
-                Serial.begin(9600);
-                'setup_code'
-                Serial.println("DEBUG: Setup complete");
-            }}
-            
-            void loop() {{
-                Serial.println("DEBUG: Loop start");
-                'loop_code'
-                Serial.println("DEBUG: Loop end");
-            }}
-            Generate the corrected sketch code based on the provided information and rules.
-        """
-                    </code></pre>
-                </div>
-        
-                <!-- Validate Program -->
-                <div class="prompt-template">
-                    <h5>Validate Program</h5>
-                    <p><strong>Description:</strong> Check if the program's execution aligns with the expected sequence and timing based on debug output.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-            Given the following task and debug output from an embed system, check if the task's execution in the debug output aligns with the expected sequence and timing:
-            
-            Task Description:
-            {task_description}
-            
-            Debug Output:
-            {output_lines}
-            
-            Ensure that:
-            1. Each task is executed.
-            2. The execution order follows the expected sequence based on the task description.
-            3. Only focus on the logic, not sensor reading results.
-            4. If the code works, but miss some debug output, the feedback should indicate only change the debug output, do not change logic.
-            5. Do not need all scenarios tested and logged, because scenarios sometimes can not be controlled.
-            6. Logging intervals are ok to be lost or not precise.
-            
-            If everything is correct, respond with "pass". If discrepancies are found, respond with "feedback: <describe the issues>". Feedback is limited to 20 words.
-        """
-                    </code></pre>
-                </div>
-        
-                <!-- Clean Final Code -->
-                <div class="prompt-template">
-                    <h5>Clean Final Code</h5>
-                    <p><strong>Description:</strong> Remove all DEBUG information from the embedded C/C++ code while preserving functionality.</p>
-                    <pre><code class="language-python">
-        prompt = f"""
-            The following embed system C/C++ code contains DEBUG information. Please clean the code by removing all DEBUG information, such as print statements used for debugging and any comments related to debugging, while preserving the functional logic. Return only the cleaned code without any additional explanations.
-            
-            Here is the code:
-            ```cpp
-            {code}
-            """
-                    </code></pre>
-                </div>
-            </div>
-        
-            <!-- Optional Styling for Appendix A -->
-            <style>
-                .prompt-category {
-                    margin-bottom: 30px;
-                }
-                .prompt-template {
-                    margin-bottom: 20px;
-                    padding: 15px;
-                    background-color: #f4f4f4;
-                    border-left: 4px solid #007BFF;
-                    border-radius: 5px;
-                }
-                .prompt-template h5 {
-                    margin-top: 0;
-                }
-                .prompt-template pre {
-                    background-color: #2d2d2d;
-                    color: #f8f8f2;
-                    padding: 10px;
-                    border-radius: 5px;
-                    overflow-x: auto;
-                }
-                .prompt-template code {
-                    font-family: 'Courier New', Courier, monospace;
-                }
-                .prompt-template p {
-                    margin: 5px 0 10px 0;
-                }
-            </style>
-        </div>
-        
-        <hr>
+<!-- HERO -->
+<header class="hero">
+  <div class="venue-badge">
+    <i class="fas fa-award" style="font-size:.8rem;"></i>
+    ACM SenSys 2026
+  </div>
+  <h1>
+    <span>AutoEmbed</span>: Towards Automated Software Development
+    for Generic Embedded IoT Systems via LLMs
+  </h1>
+  <p class="authors">
+    <strong>Huanqi Yang</strong>,&nbsp; Mingzhe Li,&nbsp; Mingda Han,&nbsp; Zhenjiang Li,&nbsp; Weitao Xu
+  </p>
+  <p class="affiliations">
+    City University of Hong Kong &nbsp;&bull;&nbsp; Shandong University
+  </p>
+  <div class="btn-group">
+    <a href="#" class="btn btn-primary">
+      <i class="fas fa-file-pdf"></i> Paper PDF
+    </a>
+    <a href="https://github.com/AutoEmbed/AutoEmbed" target="_blank" rel="noopener" class="btn btn-outline">
+      <i class="fab fa-github"></i> Code &nearr;
+    </a>
+    <a href="https://github.com/AutoEmbed/AutoEmbed/releases" target="_blank" rel="noopener" class="btn btn-outline">
+      <i class="fas fa-download"></i> Download App &darr;
+    </a>
+  </div>
+</header>
 
-        <!-- Appendix B - Example Output -->
-<div class="section">
-    <h3 id="Example">Appendix B - Example Output</h3>
-
-    <!-- Example Component Details -->
-    <div class="example-component">
-        <h4>Example information</h4>
-        <p><strong>Component:</strong> DS18B20</p>
-        <p><strong>Task:</strong> Implement a temperature monitoring system that reads data every 5 seconds and displays the readings on the serial monitor.</p>
+<!-- KEY RESULTS -->
+<div class="results-bg">
+  <div class="section section-sm">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">95.7%</div>
+        <div class="stat-label">Coding Accuracy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">86.5%</div>
+        <div class="stat-label">End-to-End Success</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">71</div>
+        <div class="stat-label">Hardware Modules</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Platforms Tested</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">355</div>
+        <div class="stat-label">IoT Tasks Evaluated</div>
+      </div>
     </div>
-
-    <!-- API Table -->
-    <div class="example-table">
-        <h4>API Table</h4>
-        <pre><code class="language-json">
-{
-    "DS18B20.h": [
-        {
-            "name": "select",
-            "description": "Select device by address",
-            "parameters": [
-                "uint8_t address[]"
-            ],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "uint8_t addr[] = {0x28, 0xFF, 0xA2, 0x64, 0x61, 0x14, 0x01, 0x3C};",
-                "return value handling": "if (ds.select(addr)) { /* handle success */ }"
-            }
-        },
-        {
-            "name": "selectNext",
-            "description": "Select next device",
-            "parameters": [],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "while (ds.selectNext()) { /* process device */ }",
-                "return value handling": "if (!ds.selectNext()) { /* handle error */ }"
-            }
-        },
-        {
-            "name": "selectNextAlarm",
-            "description": "Select next device with an alarm",
-            "parameters": [],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "while (ds.selectNextAlarm()) { /* process alarm */ }",
-                "return value handling": "if (!ds.selectNextAlarm()) { /* handle error */ }"
-            }
-        },
-        {
-            "name": "resetSearch",
-            "description": "Reset device search",
-            "parameters": [],
-            "return_type": "void",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "ds.resetSearch();",
-                "return value handling": "N/A"
-            }
-        },
-        {
-            "name": "getTempC",
-            "description": "Get temperature in Celsius",
-            "parameters": [],
-            "return_type": "float",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "float tempC = ds.getTempC();",
-                "return value handling": "if (tempC != -127.0) { /* handle valid temp */ }"
-            }
-        },
-        {
-            "name": "getTempF",
-            "description": "Get temperature in Fahrenheit",
-            "parameters": [],
-            "return_type": "float",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "float tempF = ds.getTempF();",
-                "return value handling": "if (tempF != -196.6) { /* handle valid temp */ }"
-            }
-        },
-        {
-            "name": "getResolution",
-            "description": "Get sensor resolution",
-            "parameters": [],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "uint8_t res = ds.getResolution();",
-                "return value handling": "if (res != 0) { /* handle valid resolution */ }"
-            }
-        },
-        {
-            "name": "setResolution",
-            "description": "Set sensor resolution",
-            "parameters": [
-                "uint8_t resolution"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "ds.setResolution(12);",
-                "return value handling": "N/A"
-            }
-        },
-        {
-            "name": "getPowerMode",
-            "description": "Get sensor power mode",
-            "parameters": [],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "uint8_t mode = ds.getPowerMode();",
-                "return value handling": "if (mode == 1) { /* handle parasite power */ }"
-            }
-        },
-        {
-            "name": "getFamilyCode",
-            "description": "Get family code of sensor",
-            "parameters": [],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;, DS18B20 ds(2);",
-                "parameter usage": "uint8_t code = ds.getFamilyCode();",
-                "return value handling": "if (code == 0x28) { /* handle valid code */ }"
-            }
-        },
-        {
-            "name": "getAddress",
-            "description": "Get sensor address",
-            "parameters": [
-                "uint8_t address[]"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;. Initialize DS18B20.",
-                "parameter usage": "uint8_t addr[8]; ds.getAddress(addr);",
-                "return value handling": "Handle address directly."
-            }
-        },
-        {
-            "name": "doConversion",
-            "description": "Start temperature conversion",
-            "parameters": [],
-            "return_type": "void",
-            "practices": {
-                "API order": "Use after module setup.",
-                "parameter usage": "ds.doConversion();",
-                "return value handling": "Verify operation in subsequent readout."
-            }
-        },
-        {
-            "name": "getNumberOfDevices",
-            "description": "Get number of devices on bus",
-            "parameters": [],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "Call anytime post-initialization.",
-                "parameter usage": "uint8_t count = ds.getNumberOfDevices();",
-                "return value handling": "Store and check if &gt; 0."
-            }
-        },
-        {
-            "name": "hasAlarm",
-            "description": "Check if device has alarm",
-            "parameters": [],
-            "return_type": "uint8_t",
-            "practices": {
-                "API order": "Call after conversion.",
-                "parameter usage": "uint8_t alarm = ds.hasAlarm();",
-                "return value handling": "React if alarm == 1."
-            }
-        },
-        {
-            "name": "setAlarms",
-            "description": "Set alarm thresholds",
-            "parameters": [
-                "int8_t alarmLow",
-                "int8_t alarmHigh"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "Set during setup.",
-                "parameter usage": "ds.setAlarms(LOW_ALARM, HIGH_ALARM);",
-                "return value handling": "Confirm via getAlarmLow/High."
-            }
-        },
-        {
-            "name": "getAlarmLow",
-            "description": "Get low alarm threshold",
-            "parameters": [],
-            "return_type": "int8_t",
-            "practices": {
-                "API order": "Call anytime post-setup.",
-                "parameter usage": "int8_t low = ds.getAlarmLow();",
-                "return value handling": "Display or log low threshold."
-            }
-        },
-        {
-            "name": "setAlarmLow",
-            "description": "Set low alarm threshold",
-            "parameters": [
-                "int8_t alarmLow"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "Set during setup.",
-                "parameter usage": "ds.setAlarmLow(LOW_ALARM);",
-                "return value handling": "Verify via getAlarmLow."
-            }
-        },
-        {
-            "name": "getAlarmHigh",
-            "description": "Get high alarm threshold",
-            "parameters": [],
-            "return_type": "int8_t",
-            "practices": {
-                "API order": "Call anytime post-setup.",
-                "parameter usage": "int8_t high = ds.getAlarmHigh();",
-                "return value handling": "Display or log high threshold."
-            }
-        },
-        {
-            "name": "setAlarmHigh",
-            "description": "Set high alarm threshold",
-            "parameters": [
-                "int8_t alarmHigh"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "Set during setup.",
-                "parameter usage": "ds.setAlarmHigh(HIGH_ALARM);",
-                "return value handling": "Verify via getAlarmHigh."
-            }
-        },
-        {
-            "name": "setRegisters",
-            "description": "Set sensor registers",
-            "parameters": [
-                "int8_t lowRegister",
-                "int8_t highRegister"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "Typically used during initial setup.",
-                "parameter usage": "ds.setRegisters(low, high);",
-                "return value handling": "Confirm via readback."
-            }
-        },
-        {
-            "name": "getLowRegister",
-            "description": "Get low register value",
-            "parameters": [],
-            "return_type": "int8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;;",
-                "parameter usage": "int8_t lowReg = ds.getLowRegister();",
-                "return value handling": "handle return error if -1;"
-            }
-        },
-        {
-            "name": "setLowRegister",
-            "description": "Set low register value",
-            "parameters": [
-                "int8_t lowRegister"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;",
-                "parameter usage": "ds.setLowRegister(22);",
-                "return value handling": "No return to handle."
-            }
-        },
-        {
-            "name": "getHighRegister",
-            "description": "Get high register value",
-            "parameters": [],
-            "return_type": "int8_t",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;",
-                "parameter usage": "int8_t highReg = ds.getHighRegister();",
-                "return value handling": "handle return error if -1;"
-            }
-        },
-        {
-            "name": "setHighRegister",
-            "description": "Set high register value",
-            "parameters": [
-                "int8_t highRegister"
-            ],
-            "return_type": "void",
-            "practices": {
-                "API order": "#include &lt;DS18B20.h&gt;",
-                "parameter usage": "ds.setHighRegister(26);",
-                "return value handling": "No return to handle."
-            }
-        }
-    ]
-}
-        </code></pre>
-    </div>
-
-    <!-- Component Utility Table -->
-    <div class="example-table">
-        <h4>Component Utility Table</h4>
-        <pre><code class="language-json">
-{
-    "Alarms.ino": {
-        "Alarms.ino": [
-            {
-                "functionality": "handles temperature alarms, sets alarm thresholds, and prints temperature data",
-                "API": [
-                    "selectNext",
-                    "setAlarms",
-                    "doConversion",
-                    "selectNextAlarm",
-                    "getAlarmLow",
-                    "getAlarmHigh",
-                    "getTempC"
-                ]
-            }
-        ]
-    },
-    "Multiple.ino": {
-        "Multiple.ino": [
-            {
-                "functionality": "detects and identifies multiple DS18B20 devices, retrieves their address, resolution, power mode, and temperature, and prints the information to the serial port",
-                "API": [
-                    "getNumberOfDevices",
-                    "selectNext",
-                    "getFamilyCode",
-                    "getAddress",
-                    "getResolution",
-                    "getPowerMode",
-                    "getTempC",
-                    "getTempF"
-                ]
-            }
-        ]
-    },
-    "Single.ino": {
-        "Single.ino": [
-            {
-                "functionality": "Sets up an alarm system for temperature monitoring using a DS18B20 sensor and prints the temperature value when the temperature exceeds specified limits.",
-                "API": [
-                    "select",
-                    "setAlarms",
-                    "hasAlarm",
-                    "getTempC"
-                ]
-            }
-        ]
-    }
-}
-        </code></pre>
-    </div>
-
-    <!-- Example Code with Debug Information -->
-    <div class="example-code">
-        <h4>Code with Debug Information</h4>
-        <pre><code class="language-cpp">
-#include &lt;DS18B20.h&gt;
-
-// Define the pin for DS18B20 sensor
-#define ONE_WIRE_BUS 5
-
-// Create an object for DS18B20
-DS18B20 ds(ONE_WIRE_BUS);
-
-void setup() {
-    Serial.begin(9600);
-    Serial.println("DEBUG: Setup start");
-    
-    if (ds.getNumberOfDevices() > 0) {
-        uint8_t addr[8];
-        ds.getAddress(addr);
-        Serial.print("DEBUG: Sensor address: ");
-        for (int i = 0; i < 8; i++) {
-            Serial.print(addr[i], HEX);
-            if (i < 7) {
-                Serial.print(":");
-            }
-        }
-        Serial.println();
-    } else {
-        Serial.println("ERROR: No DS18B20 sensors detected");
-    }
-
-    Serial.println("DEBUG: Setup complete");
-}
-
-void loop() {
-    Serial.println("DEBUG: Loop start");
-
-    ds.doConversion();
-    delay(750); // Wait for conversion to complete, DS18B20 needs a delay for getting data
-
-    float tempC = ds.getTempC();
-    if (tempC != -127.0) { // Check if reading is valid
-        Serial.print("Temperature in Celsius: ");
-        Serial.print(tempC);
-        Serial.println(" C");
-    } else {
-        Serial.println("ERROR: Failed to read temperature");
-    }
-
-    delay(5000); // Wait 5 seconds before the next reading
-    Serial.println("DEBUG: Loop end");
-}
-        </code></pre>
-    </div>
-
-    <!-- Optional Styling for Appendix B -->
-    <style>
-        .example-component {
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-left: 4px solid #28a745;
-            border-radius: 5px;
-        }
-        .example-component h4 {
-            margin-top: 0;
-        }
-        .example-table, .example-code {
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #f4f4f4;
-            border-left: 4px solid #17a2b8;
-            border-radius: 5px;
-        }
-        .example-table h4, .example-code h4 {
-            margin-top: 0;
-        }
-        .example-table pre, .example-code pre {
-            background-color: #2d2d2d;
-            color: #f8f8f2;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .example-table code, .example-code code {
-            font-family: 'Courier New', Courier, monospace;
-        }
-    </style>
+  </div>
 </div>
 
-<hr>
-
-        <div class="section">
-            <h3 id="Hardware">Appendix C - Supported Hardware Modules</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Module</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Interface</th>
-                        <th>Module Power Supply</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>DS18B20</td><td>Digital temperature sensor</td><td>Sensor</td><td>1-Wire</td><td>3.3V/5V</td></tr>
-                    <tr><td>LM35</td><td>Temperature sensor</td><td>Sensor</td><td>Analog</td><td>4V-30V</td></tr>
-                    <tr><td>LM75</td><td>Temperature sensor</td><td>Sensor</td><td>I2C</td><td>2.8V-5.5V</td></tr>
-                    <tr><td>MLX90614</td><td>Non-contact temperature sensor</td><td>Sensor</td><td>I2C</td><td>3.3V 5V</td></tr>
-                    <tr><td>BME280</td><td>Temperature, humidity, and pressure sensor</td><td>Sensor</td><td>I2C/SPI</td><td>1.8V-3.6V</td></tr>
-                    <tr><td>BME680</td><td>Environmental sensor (gas, humidity, temp)</td><td>Sensor</td><td>I2C/SPI</td><td>1.71V-3.6V,5V</td></tr>
-                    <tr><td>DHT11</td><td>Temperature and humidity sensor</td><td>Sensor</td><td>Digital</td><td>3V-5.5V</td></tr>
-                    <tr><td>DHT20</td><td>Temperature and humidity sensor</td><td>Sensor</td><td>I2C</td><td>2.5V-5.5V</td></tr>
-                    <tr><td>DHT22</td><td>Temperature and humidity sensor</td><td>Sensor</td><td>Digital</td><td>3V-5.5V</td></tr>
-                    <tr><td>SHT31</td><td>High precision temperature and humidity sensor</td><td>Sensor</td><td>I2C</td><td>2.4V-5.5V</td></tr>
-                    <tr><td>SHT40</td><td>High precision temperature and humidity sensor</td><td>Sensor</td><td>I2C</td><td>3.3V-5V</td></tr>
-                    <tr><td>SHT41</td><td>High precision temperature and humidity sensor</td><td>Sensor</td><td>I2C</td><td>3.3V-5V</td></tr>
-                    <tr><td>SHT45</td><td>High precision temperature and humidity sensor</td><td>Sensor</td><td>I2C</td><td>3.3V-5V</td></tr>
-                    <tr><td>SI7021</td><td>Temperature and humidity sensor</td><td>Sensor</td><td>I2C</td><td>3.3V</td></tr>
-                    <tr><td>BMP180</td><td>Pressure and temperature sensor</td><td>Sensor</td><td>I2C</td><td>1.8V-3.6V, 5V</td></tr>
-                    <tr><td>BMP280</td><td>Pressure sensor</td><td>Sensor</td><td>I2C/SPI</td><td>1.71V-3.6V</td></tr>
-                    <tr><td>MS5611</td><td>Precision pressure and temperature sensor</td><td>Sensor</td><td>I2C/SPI</td><td>3.3V,5V</td></tr>
-                    <tr><td>BH1750</td><td>Light intensity sensor</td><td>Sensor</td><td>I2C</td><td>2.4V-3.6V,5V</td></tr>
-                    <tr><td>LTR390</td><td>UV sensor</td><td>Sensor</td><td>I2C</td><td>2.5V-3.6V,5V</td></tr>
-                    <tr><td>LTR329</td><td>UV sensor</td><td>Sensor</td><td>I2C</td><td>2.4V-3.6V</td></tr>
-                    <tr><td>LTR303</td><td>UV sensor</td><td>Sensor</td><td>I2C</td><td>2.5V-3.6V</td></tr>
-                    <tr><td>VL53L0X</td><td>Laser distance sensor</td><td>Sensor</td><td>I2C</td><td>2.8V-3.5V,5v</td></tr>
-                    <tr><td>HC-SR04</td><td>Ultrasonic distance sensor</td><td>Sensor</td><td>Digital</td><td>5V</td></tr>
-                    <tr><td>PIR(HC-SR501)</td><td>Passive infrared sensor</td><td>Sensor</td><td>Digital</td><td>5V</td></tr>
-                    <tr><td>PIR(HC-SR505)</td><td>Passive infrared sensor</td><td>Sensor</td><td>Digital</td><td>5V</td></tr>
-                    <tr><td>MPU6050</td><td>Accelerometer and gyroscope</td><td>Sensor</td><td>I2C</td><td>2.3V-3.4V, 5V</td></tr>
-                    <tr><td>MPU9250</td><td>Accelerometer and gyroscope</td><td>Sensor</td><td>I2C/SPI</td><td>2.3V-3.4V,5V</td></tr>
-                    <tr><td>ADXL345</td><td>Accelerometer</td><td>Sensor</td><td>I2C/SPI</td><td>2V-3.6V,5V</td></tr>
-                    <tr><td>ADXL362</td><td>Accelerometer</td><td>Sensor</td><td>I2C/SPI</td><td>2V-3.6V</td></tr>
-                    <tr><td>HMC5883L</td><td>Magnetometer</td><td>Sensor</td><td>I2C</td><td>2.16V-3.6V,5V</td></tr>
-                    <tr><td>QMC5883L</td><td>Magnetometer</td><td>Sensor</td><td>I2C</td><td>2.16V-3.6V,5V</td></tr>
-                    <tr><td>TCS34725</td><td>Color sensor</td><td>Sensor</td><td>I2C</td><td>2.7V-3.6V,5V</td></tr>
-                    <tr><td>INA219</td><td>Current sensor</td><td>Sensor</td><td>I2C</td><td>3V-5V</td></tr>
-                    <tr><td>MQ2</td><td>Smoke sensor</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ3</td><td>Gas sensor (alcohol)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ4</td><td>Gas sensor (natural gas)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ5</td><td>Gas sensor (LPG)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ6</td><td>Gas sensor (LPG)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ7</td><td>Gas sensor (carbon monoxide)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ8</td><td>Gas sensor (hydrogen)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ9</td><td>Gas sensor (Combustible Gas)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ131</td><td>Gas sensor (ozone)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>MQ135</td><td>Gas sensor (air quality)</td><td>Sensor</td><td>Analog</td><td>5V</td></tr>
-                    <tr><td>SGP30</td><td>VOC gas sensor</td><td>Sensor</td><td>I2C</td><td>3.3V-5V</td></tr>
-                    <tr><td>SGP40</td><td>VOC gas sensor</td><td>Sensor</td><td>I2C</td><td>3.3V-5V</td></tr>
-                    <tr><td>APDS-9960</td><td>Gesture sensor</td><td>Sensor</td><td>I2C</td><td>2.4V-3.6V</td></tr>
-                    <tr><td>AS5600</td><td>Magnetic encoder</td><td>Sensor</td><td>I2C</td><td>3.3V</td></tr>
-                    <tr><td>Soil Moisture Sensor</td><td>Soil moisture sensor</td><td>Sensor</td><td>Analog</td><td>3.3V-5V</td></tr>
-                    <tr><td>SH1106</td><td>OLED display</td><td>Display</td><td>I2C/SPI</td><td>3.3V-5V</td></tr>
-                    <tr><td>SSD1306 OLED</td><td>OLED display</td><td>Display</td><td>I2C/SPI</td><td>3.3V-5V</td></tr>
-                    <tr><td>SSD1331</td><td>OLED display</td><td>Display</td><td>SPI</td><td>3.3V-5V</td></tr>
-                    <tr><td>SSD1351</td><td>OLED display</td><td>Display</td><td>I2C/SPI</td><td>3.3V</td></tr>
-                    <tr><td>ILI9163/ST7735</td><td>OLED display</td><td>Display</td><td>SPI</td><td>3.3V</td></tr>
-                    <tr><td>ILI9341</td><td>OLED display</td><td>Display</td><td>SPI</td><td>3.3V</td></tr>
-                    <tr><td>MAX7219</td><td>Dot matrix display</td><td>Display</td><td>SPI</td><td>5V</td></tr>
-                    <tr><td>RFM95 SHIELD</td><td>LoRa communication module</td><td>Communication</td><td>SPI</td><td>3.3V 5V</td></tr>
-                    <tr><td>EBYTE LORA E32(SX1276)</td><td>LoRa communication module</td><td>Communication</td><td>UART</td><td>3.3V</td></tr>
-                    <tr><td>CC1101</td><td>Wireless transceiver module</td><td>Communication</td><td>SPI</td><td>1.8V-3.6V</td></tr>
-                    <tr><td>RFID PN532</td><td>NFC/RFID module</td><td>Communication</td><td>I2C/SPI/UART</td><td>3.3V/5V</td></tr>
-                    <tr><td>nRF24L01</td><td>Wireless transceiver</td><td>Communication</td><td>SPI</td><td>1.9V-3.6V</td></tr>
-                    <tr><td>Relay</td><td>Relay module</td><td>Other</td><td>Digital</td><td>3.3V</td></tr>
-                    <tr><td>SG-90/FAN</td><td>Servo motor, fan</td><td>Actuator</td><td>PWM</td><td>3-5V</td></tr>
-                    <tr><td>DS1307</td><td>Real-time clock module</td><td>Other</td><td>I2C</td><td>3.3V-5V</td></tr>
-                    <tr><td>DS3231</td><td>Real-time clock module</td><td>Other</td><td>I2C</td><td>3.3V-5V</td></tr>
-                    <tr><td>ADS1115</td><td>16-bit ADC</td><td>Other</td><td>I2C</td><td>2V-5.5V</td></tr>
-                    <tr><td>HX711</td><td>ADC</td><td>Other</td><td>Digital</td><td>2.6V-5.5V</td></tr>
-                    <tr><td>AD9833</td><td>DDS signal generator</td><td>Other</td><td>SPI</td><td>3.3V 5V</td></tr>
-                    <tr><td>AD9850</td><td>DDS signal generator</td><td>Other</td><td>SPI</td><td>3.3V 5V</td></tr>
-                    <tr><td>MCP4725</td><td>12-bit DAC</td><td>Other</td><td>I2C</td><td>2.7V-5.5V</td></tr>
-                    <tr><td>Buzzer Module</td><td>Active buzzer</td><td>Other</td><td>Digital</td><td>3.3V-5V</td></tr>
-                    <tr><td>MicroSD Card Module</td><td>Data storage</td><td>Storage</td><td>SPI</td><td>3.3V-5V</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- <div class="section">
-            <h3>Appendix B - EmbedTask Dataset</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Task ID</th>
-                        <th>Description</th>
-                        <th>Complexity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Task 1</td>
-                        <td>[Describe task]</td>
-                        <td>High</td>
-                    </tr>
-                    <tr>
-                        <td>Task 2</td>
-                        <td>[Describe task]</td>
-                        <td>Medium</td>
-                    </tr>
-                    <tr>
-                        <td>Task 3</td>
-                        <td>[Describe task]</td>
-                        <td>Low</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <hr> -->
+<!-- ABSTRACT -->
+<section id="abstract">
+  <div class="section">
+    <div class="divider"></div>
+    <h2 class="section-title">Abstract</h2>
+    <p class="section-lead">What is AutoEmbed and why does it matter?</p>
+    <div class="abstract-box">
+      <p>
+        Embedded IoT system development is crucial for enabling seamless connectivity and functionality across a wide range of applications. However, such a complex process requires cross-domain knowledge of hardware and software and hence often necessitates direct developer involvement, making it labor-intensive, time-consuming, and error-prone. To address this challenge, this paper introduces AutoEmbed, the first fully automated software development platform for general-purpose embedded IoT systems. The key idea is to leverage the reasoning ability of Large Language Models (LLMs) and embedded system expertise to automate the hardware-in-the-loop development process. The main methods include a component-aware library resolution method for addressing hardware dependencies, a library knowledge generation method that injects utility domain knowledge into LLMs, and an auto-programming method that ensures successful deployment. We evaluate AutoEmbed's performance across 71 modules and four mainstream embedded development platforms with over 350 IoT tasks. Experimental results show that AutoEmbed can generate codes with an accuracy of 95.7% and complete tasks with a success rate of 86.5%, surpassing human-in-the-loop baselines by 15.6%&ndash;37.7% and 25.5%&ndash;53.4%, respectively. We also show AutoEmbed's potential through case studies in environmental monitoring and remote control systems development.
+      </p>
     </div>
-    <div style="display:none;">
-        <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Fo1godCYLpOsw6TZ_fTw8jkPXHMY8Q_LC0fkymU34M4&cl=ffffff&w=a"></script>
   </div>
-  </body>
+</section>
+
+<!-- SYSTEM OVERVIEW -->
+<section id="overview" style="background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section">
+    <div class="divider"></div>
+    <h2 class="section-title">System <span class="accent">Overview</span></h2>
+    <p class="section-lead">AutoEmbed's four-stage pipeline automates the full embedded IoT development lifecycle.</p>
+    <div class="img-card">
+      <img src="Overview.png" alt="AutoEmbed system overview diagram showing the four-stage pipeline">
+      <p class="img-caption">Figure 1. AutoEmbed system overview: Library Solving &rarr; Knowledge Generation &rarr; Selective Memory Injection &rarr; Auto-Programming.</p>
+    </div>
+
+    <div class="pipeline-steps">
+      <div class="pipeline-step">
+        <div class="step-icon"><i class="fas fa-puzzle-piece"></i></div>
+        <div class="step-number">Stage 1</div>
+        <div class="step-title">Library Solving</div>
+        <p class="step-desc">Component-aware library resolution identifies the exact hardware libraries needed, eliminating dependency guesswork.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-icon"><i class="fas fa-book-open"></i></div>
+        <div class="step-number">Stage 2</div>
+        <div class="step-title">Knowledge Generation</div>
+        <p class="step-desc">Library-specific domain knowledge is synthesized and injected into the LLM context for accurate hardware interaction.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-icon"><i class="fas fa-memory"></i></div>
+        <div class="step-number">Stage 3</div>
+        <div class="step-title">Selective Memory Injection</div>
+        <p class="step-desc">Relevant prior knowledge and examples are selectively retrieved and composed into the prompt for precise code generation.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-icon"><i class="fas fa-code"></i></div>
+        <div class="step-number">Stage 4</div>
+        <div class="step-title">Auto-Programming</div>
+        <p class="step-desc">Generated code is automatically compiled, verified, and flashed to the target device with iterative error correction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<div class="download-bg" id="download">
+  <div class="download-inner">
+    <div class="divider"></div>
+    <h2 class="section-title">Desktop <span class="accent">Application</span></h2>
+    <p class="section-lead" style="margin-bottom: 36px;">AutoEmbed is available as an open-source desktop application for Windows and macOS, built with Electron, React, and Python.</p>
+    <div class="download-grid">
+      <div>
+        <p class="download-desc">
+          The AutoEmbed GUI provides a streamlined interface to describe your IoT task, specify connected hardware components, and let the pipeline handle everything from library resolution to flashing your device &mdash; no manual IDE configuration required.
+        </p>
+        <div class="dl-buttons">
+          <a href="https://github.com/AutoEmbed/AutoEmbed/releases" target="_blank" rel="noopener" class="btn-dl">
+            <i class="fab fa-windows"></i>
+            <div>
+              <div>Windows Installer</div>
+              <div class="dl-meta">.exe &bull; Windows 10 / 11</div>
+            </div>
+          </a>
+          <a href="https://github.com/AutoEmbed/AutoEmbed/releases" target="_blank" rel="noopener" class="btn-dl">
+            <i class="fab fa-apple"></i>
+            <div>
+              <div>macOS &mdash; Apple Silicon</div>
+              <div class="dl-meta">.dmg &bull; ARM64 (M1/M2/M3)</div>
+            </div>
+          </a>
+          <a href="https://github.com/AutoEmbed/AutoEmbed/releases" target="_blank" rel="noopener" class="btn-dl">
+            <i class="fab fa-apple"></i>
+            <div>
+              <div>macOS &mdash; Intel</div>
+              <div class="dl-meta">.dmg &bull; x86_64</div>
+            </div>
+          </a>
+          <a href="https://github.com/AutoEmbed/AutoEmbed" target="_blank" rel="noopener" class="btn-dl">
+            <i class="fab fa-github"></i>
+            <div>
+              <div>View Source on GitHub</div>
+              <div class="dl-meta">Build from source for Linux</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="prereqs">
+          <h4><i class="fas fa-list-check" style="margin-right:6px;"></i>Prerequisites</h4>
+          <ul>
+            <li>
+              <i class="fas fa-circle-check"></i>
+              <span><strong>Arduino CLI</strong> &mdash; Required for compilation and flashing. Install from <a href="https://arduino.github.io/arduino-cli/" target="_blank" rel="noopener" style="color:var(--blue);">arduino.github.io/arduino-cli</a>.</span>
+            </li>
+            <li>
+              <i class="fas fa-circle-check"></i>
+              <span><strong>USB Driver</strong> &mdash; Install the appropriate CH340 / CP2102 driver for your Arduino board to enable USB serial communication.</span>
+            </li>
+            <li>
+              <i class="fas fa-circle-check"></i>
+              <span><strong>OpenAI-compatible API Key</strong> &mdash; AutoEmbed supports any OpenAI-compatible endpoint (OpenAI, Azure, local Ollama, etc.).</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKFLOW -->
+<section id="workflow" style="background: var(--white); border-top: 1px solid var(--border);">
+  <div class="section">
+    <div class="divider"></div>
+    <h2 class="section-title">How It <span class="accent">Works</span></h2>
+    <p class="section-lead">From task description to flashed device in five steps, fully automated.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
+      <div>
+        <div class="img-card">
+          <img src="WORK_FLOW.png" alt="AutoEmbed workflow diagram showing the five user steps">
+          <p class="img-caption">Figure 2. End-to-end user workflow from task specification to device deployment.</p>
+        </div>
+      </div>
+      <div>
+        <div class="workflow-steps">
+          <div class="wf-step">
+            <div class="wf-num">1</div>
+            <div class="wf-content">
+              <h4>Prepare Hardware</h4>
+              <p>Connect your Arduino (or compatible) board to the PC via USB. Attach sensors, actuators, and other modules.</p>
+            </div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-num">2</div>
+            <div class="wf-content">
+              <h4>Describe Your Task</h4>
+              <p>Open the AutoEmbed desktop app, type a natural-language task description, and list the hardware components in use.</p>
+            </div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-num">3</div>
+            <div class="wf-content">
+              <h4>Automated Pipeline Runs</h4>
+              <p>AutoEmbed executes the full four-stage pipeline: library solving &rarr; knowledge generation &rarr; prompt assembly &rarr; LLM-driven code synthesis.</p>
+            </div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-num">4</div>
+            <div class="wf-content">
+              <h4>Compile &amp; Flash</h4>
+              <p>The generated code is automatically compiled with Arduino CLI, errors are iteratively corrected, and the binary is flashed to the connected device.</p>
+            </div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-num">5</div>
+            <div class="wf-content">
+              <h4>System Ready</h4>
+              <p>Your IoT system starts running immediately. No manual IDE, no library hunting &mdash; zero to deployed in minutes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO VIDEOS -->
+<section id="demos" style="border-top: 1px solid var(--border);">
+  <div class="section">
+    <div class="divider"></div>
+    <h2 class="section-title">Demo <span class="accent">Videos</span></h2>
+    <p class="section-lead">Watch AutoEmbed build real IoT systems end-to-end from a plain text description.</p>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/upFCZ8X9dnI"
+            title="AutoEmbed Demo: Environmental Monitoring System"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="video-caption">
+          <i class="fas fa-thermometer-half" style="color:var(--blue); margin-right:6px;"></i>
+          Environmental Monitoring System
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/_ySeOYEzsjk"
+            title="AutoEmbed Demo: Remote Fan Control System"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="video-caption">
+          <i class="fas fa-fan" style="color:var(--blue); margin-right:6px;"></i>
+          Remote Fan Control System
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/JY7V_TtOXnU"
+            title="AutoEmbed Demo: Obstacle-Avoiding Car System"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="video-caption">
+          <i class="fas fa-car" style="color:var(--blue); margin-right:6px;"></i>
+          Obstacle-Avoiding Car System
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIBTEX -->
+<div class="bibtex-bg" id="bibtex">
+  <div class="bibtex-inner">
+    <div class="divider"></div>
+    <h2 class="section-title">Citation</h2>
+    <p style="color: #94a3b8; margin-bottom: 28px; font-size: .95rem;">If you find AutoEmbed useful in your research, please cite our paper.</p>
+    <div class="bibtex-code">
+      <button class="copy-btn" onclick="
+        const t = '@inproceedings{yang2026autoembed,\n  title={AutoEmbed: Towards Automated Software Development for Generic Embedded IoT Systems via LLMs},\n  author={Yang, Huanqi and Li, Mingzhe and Han, Mingda and Li, Zhenjiang and Xu, Weitao},\n  booktitle={Proceedings of the 24th ACM Conference on Embedded Networked Sensor Systems (SenSys)},\n  year={2026}\n}';
+        navigator.clipboard.writeText(t).then(() => {
+          this.textContent = 'Copied!';
+          setTimeout(() => this.textContent = 'Copy', 2000);
+        });
+      ">Copy</button>
+<span class="k">@inproceedings</span>{<span class="v">yang2026autoembed</span>,
+  <span class="k">title</span>    = {<span class="s">AutoEmbed: Towards Automated Software Development for Generic Embedded IoT Systems via LLMs</span>},
+  <span class="k">author</span>   = {<span class="s">Yang, Huanqi and Li, Mingzhe and Han, Mingda and Li, Zhenjiang and Xu, Weitao</span>},
+  <span class="k">booktitle</span>= {<span class="s">Proceedings of the 24th ACM Conference on Embedded Networked Sensor Systems (SenSys)</span>},
+  <span class="k">year</span>     = {<span class="s">2026</span>}
+}</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    &copy; 2026 AutoEmbed Project &mdash;
+    <a href="https://github.com/AutoEmbed/AutoEmbed" target="_blank" rel="noopener">
+      <i class="fab fa-github" style="margin-right:4px;"></i>GitHub
+    </a>
+    &nbsp;&bull;&nbsp; ACM SenSys 2026
+  </p>
+  <p style="margin-top: 8px; font-size: .78rem; color: #475569;">
+    City University of Hong Kong &nbsp;&bull;&nbsp; Shandong University
+  </p>
+</footer>
+
+</body>
 </html>
