@@ -727,15 +727,13 @@
     <h2 class="section-title">How It <span class="accent">Works</span></h2>
     <p class="section-lead">From task description to flashed device in five steps, fully automated.</p>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
-      <div>
-        <div class="img-card">
-          <img src="WORK_FLOW.png" alt="AutoEmbed workflow diagram showing the five user steps">
-          <p class="img-caption">Figure 2. End-to-end user workflow from task specification to device deployment.</p>
-        </div>
-      </div>
-      <div>
-        <div class="workflow-steps">
+    <div class="img-card" style="margin-bottom: 40px;">
+      <img src="WORK_FLOW.png" alt="AutoEmbed workflow diagram showing the five user steps">
+      <p class="img-caption">Figure 2. End-to-end user workflow from task specification to device deployment.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div class="workflow-steps" style="display: contents;">
           <div class="wf-step">
             <div class="wf-num">1</div>
             <div class="wf-content">
@@ -772,7 +770,6 @@
             </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </section>
