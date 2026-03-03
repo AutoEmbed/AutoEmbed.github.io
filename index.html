@@ -539,6 +539,7 @@
       <li><a href="#workflow">Workflow</a></li>
       <li><a href="#demos">Demos</a></li>
       <li><a href="#bibtex">BibTeX</a></li>
+      <li><a href="appendix.html">Appendix</a></li>
     </ul>
   </div>
 </nav>
@@ -869,5 +870,17 @@
   </p>
 </footer>
 
+
+<!-- Anchor redirects for paper links -->
+<div id="Prompt" style="display:none"></div>
+<div id="Example" style="display:none"></div>
+<script>
+  (function() {
+    var h = window.location.hash;
+    if (h === '#Prompt' || h === '#Example') {
+      window.location.replace('appendix.html' + h);
+    }
+  })();
+</script>
 </body>
 </html>
